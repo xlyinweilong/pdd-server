@@ -1,0 +1,14 @@
+server:
+  port: 9080
+logging:
+  config: classpath:logback-${spring.profiles.active}.xml
+spring:
+  profiles:
+    active: dev
+#    active: prod
+  transaction:
+    rollback-on-commit-failure: true
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB

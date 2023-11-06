@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html;charset=UTF-8"/>
+    <style media="print">
+        @page {
+            margin: 0mm 1mm 0mm 1mm;
+            size: portrait;
+        }
+    </style>
+    <style type="text/css">  
+      table {
+        font-size: 1mm;
+        border-collapse: collapse;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .al {
+        width: 58mm;
+        margin-left: 1px;
+        margin-right: 1px;
+    }
+
+    body {
+        text-align: center;
+        margin: 1px;
+        font-size: 10px;
+    }
+    </style>
+    <script type="text/javascript" src="https://erp.wisdomyy.com/static/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="https://erp.wisdomyy.com/static/js/JsBarcode.all.min.js"></script>
+    <script type="text/javascript" src="https://erp.wisdomyy.com/static/js/qrcode.min.js"></script>
+</head>
+<body class="al">
+<div style="margin:0 auto;border:0px solid #000;width:58mm">
+    <h2 th:text="${channel.name}"></h2>
+    <p id="code" style="display: none" th:text="${billPo.code}"></p>
+    <svg id="svgcode"></svg>
+    <p style="text-align: left;margin-top: 0px;margin-bottom: 0px;padding-left: 2px"
+       th:text="'创建时间:' + ${createDate}"></p>
+    <p th:if="${employNames} ne null" style="text-align: left;margin-top: 0px;margin-bottom: 0px;"
+       th:text="'导购:' + ${employNames}"></p>
+    <hr style="margin-top: 1px;margin-bottom: 1px;"/>
+    <table style="width:100%">
+        <thead>
+        <tr>
+            <th>商品代码</th>
+            <th>名称</th>
+            <th>颜色</th>
+            <th>尺码</th>
+            <th>吊牌</th>
+            <th>折扣</th>
+            <th>单价</th>
+            <th>数量</th>
+            <th>金额</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="goods : ${goodsList}">
+            <td th:text="${goods.goodsCode}"></td>
+            <td th:text="${goods.goodsName}"></td>
+            <td th:text="${goods.goodsColorName}"></td>
+            <td th:text="${goods.goodsSizeName}"></td>
+            <td th:text="${goods.tagPriceStr}"></td>
+            <td th:text="${goods.discount}"></td>
+            <td th:text="${goods.transactionPriceStr}"></td>
+            <td th:text="${goods.quantity}"></td>
+            <td th:text="${goods.amountStr}"></td>
+        </tr>
+    </table>
+    <hr style="margin-top:1px;margin-bottom:1px;"/>
+    <table style="width:100%">
+        <thead>
+        <tr>
+            <th>合计</th>
+            <th th:text="${totalGoodsCount}"></th>
+            <th th:text="${totalGoodsAmount} + '元'"></th>
+        </tr>
+        </thead>
+    </table>
+    <hr style="margin-top:10px;margin-bottom:1px;"/>
+    <table th:if="${paymentList.size()} > 0" style="width:100%;">
+        <thead>
+        <tr>
+            <th>结算方式</th>
+            <th>金额</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="payment : ${paymentList}">
+            <td th:text="${payment.paymentName}"></td>
+            <td th:text="${payment.netAmount - payment.returnNetAmoun}"></td>
+        </tr>
+    </table>
+    <hr th:if="${vip} ne null" style="margin-top:10px;margin-bottom:1px;"/>
+    <div th:if="${vip} ne null" style="width:100%;padding-left: 2px">
+        <div style="width: 100%;text-align: left;"><b>VIP卡：</b><span th:text="${vip.code}"></span></div>
+        <div style="width: 100%;margin-top: 2px;text-align: left;"><b>VIP积分：</b><span th:text="${vip.integral}"></span>
+        </div>
+        <div style="width: 100%;margin-top: 2px;text-align: left;"><b>VIP卡余额：</b><span th:text="${vip.balance}"></span>
+        </div>
+    </div>
+    <div  style="text-align: left;" th:text="${marks}"/>
+    <p id="qrCodeUrl" style="display: none" th:text="${qrCodeUrl}"></p>
+    <div style="margin:0 auto;width: 128px">
+        <div style="text-align: center;" id="qrcode"></div>
+    </div>
+</div>
+<script>
+    $("#svgcode").JsBarcode($("#code").html(), {
+        width: 1.5,
+        height: 40
+    });
+    if($("#qrCodeUrl").html().length > 0){
+        new QRCode(document.getElementById("qrcode"), {
+            text: $("#qrCodeUrl").html(),
+            width: 128,
+            height: 128
+        });
+    }
+    window.print()
+</script>
+</body>
+</html>

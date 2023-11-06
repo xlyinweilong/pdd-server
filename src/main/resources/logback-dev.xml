@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+    <!--<property name="LOG_HOME" value="/data/log/zuul" />-->
+    <!--<springProperty scope="context" name="LOG_HOME" source="logback.log.home"/>-->
+    <!--<property name="LOG_HOME" value="/data/log/zuul" />-->
+    <!--只在控制台输出日志组件-->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%highlight(%d{yyyy-MM-dd HH:mm}) %boldYellow([%thread]) %-5level %boldCyan([%logger{50}[%L]])
+                %msg%n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--info日志文件输出组件-->
+    <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--当前日志输出文件位置，目录不存在时会自动创建-->
+        <file>${LOG_HOME}/service.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--每天滚动，满足条件时滚动生成的文件名格式-->
+            <fileNamePattern>${LOG_HOME}/service.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!--该日志的最大数量-->
+            <MaxHistory>120</MaxHistory>
+            <!--按文件大小滚动，当某一天的日志文件大于100m时滚动，生成一个新的文件来存放日志，结合上面的每天滚动一起使用，可以避免日志文件过大不利于查找-->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <!--日志输出格式，编码以及信息格式-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm} [%thread] %-5level %logger{50}[%L] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--error日志文件输出组件-->
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <MaxHistory>120</MaxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <!-- 过滤日志，只输出error等级的日志-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50}[%L] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--druid监控的统计-->
+    <appender name="Druid_MONITOR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--当前日志输出文件位置，目录不存在时会自动创建-->
+        <file>${LOG_HOME}/druid_monitor.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--每天滚动，满足条件时滚动生成的文件名格式-->
+            <fileNamePattern>${LOG_HOME}/druid_monitor.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!--该日志的最大数量-->
+            <MaxHistory>120</MaxHistory>
+            <!--按文件大小滚动，当某一天的日志文件大于100m时滚动，生成一个新的文件来存放日志，结合上面的每天滚动一起使用，可以避免日志文件过大不利于查找-->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <!--日志输出格式，编码以及信息格式-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm} [%thread] %-5level %logger{50}[%L] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--接口日志-->
+    <appender name="API_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--当前日志输出文件位置，目录不存在时会自动创建-->
+        <file>${LOG_HOME}/api.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--每天滚动，满足条件时滚动生成的文件名格式-->
+            <fileNamePattern>${LOG_HOME}/api.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!--该日志的最大数量-->
+            <MaxHistory>120</MaxHistory>
+            <!--按文件大小滚动，当某一天的日志文件大于100m时滚动，生成一个新的文件来存放日志，结合上面的每天滚动一起使用，可以避免日志文件过大不利于查找-->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <!--日志输出格式，编码以及信息格式-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm} [%thread] %-5level %logger{50}[%L] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--druid慢SQL日志-->
+    <appender name="Druid_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 正在记录的日志文件的路径及文件名 -->
+        <file>${LOG_HOME}/log_druid.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/log-druid-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <!-- 追加方式记录日志 -->
+        <append>true</append>
+        <!-- 日志文件的格式 -->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger Line:%-3L - %msg%n</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <!--过滤日志-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+    <!--druid相关logger，additivity="false" 设置打印信息行为不向上级传递-->
+    <logger name="com.alibaba.druid.filter.stat.StatFilter" level="DEBUG" additivity="false">
+        <appender-ref ref="Druid_FILE"/>
+    </logger>
+
+    <!--定期输入日志文件到指定的文件-->
+    <logger name="com.wisdomyy.common.config.druid.StatLogger" level="INFO" additivity="false">
+        <appender-ref ref="Druid_MONITOR_FILE"/>
+    </logger>
+
+    <!--指定拦截器的输出到一个特定的文件-->
+    <logger name="com.wisdomyy.common.log.aspect.LogAspect" level="INFO" additivity="false">
+        <!--<appender-ref ref="API_FILE"/>-->
+    </logger>
+
+    <logger name="druid.sql.Statement" level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <!--顶级logger-->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <!--<appender-ref ref="FILE_INFO"/>-->
+        <!--<appender-ref ref="FILE_ERROR"/>-->
+    </root>
+    <root level="ERROR">
+        <appender-ref ref="STDOUT"/>
+        <!--<appender-ref ref="FILE_INFO"/>-->
+        <!--<appender-ref ref="FILE_ERROR"/>-->
+    </root>
+</configuration>

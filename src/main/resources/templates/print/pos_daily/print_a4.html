@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="application/pdf;charset=UTF-8"/>
+    <style media="print">
+        @page {
+            margin: 0mm 1mm 0mm 1mm;
+            size: portrait;
+        }
+    </style>
+    <style type="text/css">  
+      table {
+        font-size: 20px;
+        border-collapse: collapse;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .al {
+        width: 210mm;
+        margin-left: 1px;
+        margin-right: 1px;
+    }
+
+    body {
+        text-align: center;
+        margin: 1px;
+        font-size: 10px;
+    }
+    </style>
+</head>
+<body id="all" class="al">
+<div style="margin:0 auto;border:0px solid #000;width:210mm">
+    <h2>日结零售单</h2>
+    <p style="text-align: left;margin-top: 0px;margin-bottom: 0px;padding-left: 2px"
+       th:text="'日结店铺:' + ${channel.name}"></p>
+    <p style="text-align: left;margin-top: 0px;margin-bottom: 0px;padding-left: 2px"
+       th:text="'日结日期:' + ${date}"></p>
+    <p style="text-align: left;margin-top: 0px;margin-bottom: 0px;padding-left: 2px"
+       th:text="'打印时间:' + ${printDate}"></p>
+    <hr style="margin-top: 1px;margin-bottom: 1px;"/>
+    <table style="width:100%">
+        <thead>
+        <tr>
+            <th>项目</th>
+            <th>内容</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${itemList}">
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.value}"></td>
+        </tr>
+    </table>
+    <hr th:if="${!paymentList.isEmpty()}" style="margin-top:10px;margin-bottom:1px;"/>
+    <table style="width:100%;" th:if="${!paymentList.isEmpty()}">
+        <thead>
+        <tr>
+            <th>支付方式</th>
+            <th>金额</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="payment : ${paymentList}">
+            <td th:text="${payment.paymentName}"></td>
+            <td th:text="${payment.amount}"></td>
+        </tr>
+    </table>
+    <hr th:if="${!employList.isEmpty()}" style="margin-top:10px;margin-bottom:1px;"/>
+    <table style="width:100%;" th:if="${!employList.isEmpty()}">
+        <thead>
+        <tr>
+            <th>导购姓名</th>
+            <th>销售金额</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employ : ${employList}">
+            <td th:text="${employ.employName}"></td>
+            <td th:text="${employ.amount}"></td>
+        </tr>
+    </table>
+    <hr th:if="${!settleCodeOutList.isEmpty()}" style="margin-top:10px;margin-bottom:1px;"/>
+    <table style="width:100%;" th:if="${!settleCodeOutList.isEmpty()}">
+        <thead>
+        <tr>
+            <th>结算码</th>
+            <th>金额</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="sco : ${settleCodeOutList}">
+            <td th:text="${sco.code}"></td>
+            <td th:text="${sco.amount}"></td>
+        </tr>
+    </table>
+</div>
+<script>
+    window.print()
+</script>
+</body>
+</html>
